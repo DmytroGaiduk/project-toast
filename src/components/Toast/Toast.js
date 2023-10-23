@@ -18,22 +18,22 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ children, variant, setVisible }) {
+function Toast({ children, variant, handleDelete, id }) {
 
   const Icon = ICONS_BY_VARIANT[variant]
 
-  React.useEffect(() => {
-    function handleEsc(event) {
-      if (event.code === 'Escape') {
-        setVisible(false)
-      }
-    }
-    window.addEventListener('keydown', handleEsc)
+  // React.useEffect(() => {
+  //   function handleEsc(event) {
+  //     if (event.code === 'Escape') {
+  //       setVisible(false)
+  //     }
+  //   }
+  //   window.addEventListener('keydown', handleEsc)
 
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, [])
+  //   return () => {
+  //     window.removeEventListener('keydown', handleEsc);
+  //   };
+  // }, [])
 
 
   return (
@@ -44,7 +44,7 @@ function Toast({ children, variant, setVisible }) {
       <p className={styles.content}>
         {children}
       </p>
-      <button onClick={() => { setVisible(false) }} className={styles.closeButton}>
+      <button onClick={(e) => { handleDelete(id) }} className={styles.closeButton}>
         <X size={24} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
