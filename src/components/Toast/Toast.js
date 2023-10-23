@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children } from 'react';
 import {
   AlertOctagon,
   AlertTriangle,
@@ -18,16 +18,33 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast() {
+function Toast({ children, variant, setVisible }) {
+
+  const Icon = ICONS_BY_VARIANT[variant]
+
+  React.useEffect(() => {
+    function handleEsc(event) {
+      if (event.code === 'Escape') {
+        setVisible(false)
+      }
+    }
+    window.addEventListener('keydown', handleEsc)
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, [])
+
+
   return (
-    <div className={`${styles.toast} ${styles.notice}`}>
+    <div className={`${styles.toast} ${styles[variant]}`}>
       <div className={styles.iconContainer}>
-        <Info size={24} />
+        <Icon size={24} />
       </div>
       <p className={styles.content}>
-        16 photos have been uploaded
+        {children}
       </p>
-      <button className={styles.closeButton}>
+      <button onClick={() => { setVisible(false) }} className={styles.closeButton}>
         <X size={24} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
