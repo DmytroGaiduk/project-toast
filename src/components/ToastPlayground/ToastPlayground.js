@@ -1,48 +1,27 @@
 import React from 'react';
 import Button from '../Button';
-import Toast from '../Toast'
 import ToastShelf from '../ToastShelf'
-
+import { ToastContext } from '../ToastProvider/ToastProvider';
 import styles from './ToastPlayground.module.css';
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
 
+  const { handleCreateToast } = React.useContext(ToastContext);
+
+
   const [variant, setVariant] = React.useState('notice')
   const [message, setMessage] = React.useState('test')
-  const [toasts, setToasts] = React.useState([
-    {
-      message: 'Something went wrong!',
-      variant: 'error',
-      key: 1
-    },
-    {
-      message: '17 photos uploaded',
-      variant: 'success',
-      key: 2
-    },
-  ]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newMessage = {
-      message: message,
-      variant: variant,
-      key: crypto.randomUUID()
-    }
-    const nextToasts = [...toasts, newMessage]
-    setToasts(nextToasts)
-  }
+    handleCreateToast(message, variant);
 
-  const handleDelete = (key) => {
 
-    const nextToasts = toasts.filter(item => {
-      return item.key !== key
-    })
-
-    setToasts(nextToasts)
+    setMessage('');
+    setVariant(VARIANT_OPTIONS[0])
   }
 
   return (
@@ -52,7 +31,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <ToastShelf toasts={toasts} handleDelete={handleDelete}></ToastShelf>
+      <ToastShelf ></ToastShelf>
 
       <form className={styles.controlsWrapper} onSubmit={handleSubmit}>
         <div className={styles.row}>
@@ -102,7 +81,8 @@ function ToastPlayground() {
           <div
             className={`${styles.inputWrapper} ${styles.radioWrapper}`}
           >
-            <Button onClick={handleSubmit}>Pop Toast!</Button>
+            <Button onClick={handleSubmit} >Pop Toast!</Button>
+
           </div>
         </div>
       </form>

@@ -8,6 +8,7 @@ import {
 } from 'react-feather';
 
 import VisuallyHidden from '../VisuallyHidden';
+import { ToastContext } from '../ToastProvider/ToastProvider';
 
 import styles from './Toast.module.css';
 
@@ -18,22 +19,13 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ children, variant, handleDelete, id }) {
+function Toast({ children, variant, id }) {
 
-  const Icon = ICONS_BY_VARIANT[variant]
+  const Icon = ICONS_BY_VARIANT[variant];
 
-  // React.useEffect(() => {
-  //   function handleEsc(event) {
-  //     if (event.code === 'Escape') {
-  //       setVisible(false)
-  //     }
-  //   }
-  //   window.addEventListener('keydown', handleEsc)
+  const { handleDelete } = React.useContext(ToastContext);
 
-  //   return () => {
-  //     window.removeEventListener('keydown', handleEsc);
-  //   };
-  // }, [])
+
 
 
   return (
